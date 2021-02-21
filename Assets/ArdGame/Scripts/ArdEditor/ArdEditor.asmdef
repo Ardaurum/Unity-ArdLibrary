@@ -1,0 +1,20 @@
+{
+    "name": "ArdEditor",
+    "rootNamespace": "ArdEditor",
+    "references": [
+        "GUID:aba50ad0a62b8fe40aa3878a6af34793"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_EDITOR"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
