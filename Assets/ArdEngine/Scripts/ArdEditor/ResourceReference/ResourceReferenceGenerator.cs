@@ -13,8 +13,7 @@ namespace ArdEditor.ResourceReference
         public const string KEY_FIELD = "Key";
         public const string VALUE_FIELD = "Value";
         
-        [MenuItem("Ard/Generate")]
-        public static void Generate()
+        public static void GenerateAll()
         {
             TypeCache.TypeCollection resourceValues = TypeCache.GetTypesDerivedFrom<IResourceValue>();
             var codeGen = new CodeBuilder();
@@ -62,7 +61,7 @@ namespace ArdEditor.ResourceReference
                 .AppendLine($"namespace {resourceValue.Namespace}");
             using (codeGen.CurlyScope())
             {
-                codeGen.AppendLine($"public sealed class {resourceValue.Name}Set : ResourceReferenceSetScriptable");
+                codeGen.AppendLine($"public sealed class {resourceValue.Name}Set : ResourceReferenceSet");
                 using (codeGen.CurlyScope())
                 {
                     codeGen.AppendLine($"[{nameof(SerializeField)}] private {resourceValue.Name}Pair[] _data;")

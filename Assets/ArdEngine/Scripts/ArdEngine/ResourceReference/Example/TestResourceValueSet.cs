@@ -1,16 +1,15 @@
 //========================================================
 // NO TOUCHING! This file was generated.
 // Any changes in this code will be removed when auto-generation runs.
-// Generation date: 25/03/2021 22:35:15
+// Generation date: 05/04/2021 21:04:27
 //========================================================
 
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace ArdEngine.ResourceReference.Example
 {
-	[CreateAssetMenu(menuName = "Ard/TestResourceValueSet")]
-	public sealed class TestResourceValueSet : ResourceReferenceSetScriptable
+	public sealed class TestResourceValueSet : ResourceReferenceSet
 	{
 		[SerializeField] private TestResourceValuePair[] _data;
 		public IReadOnlyList<TestResourceValuePair> Data => _data;

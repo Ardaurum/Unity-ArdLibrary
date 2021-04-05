@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace ArdEditor.ResourceReference
 {
-    [CustomEditor(typeof(ResourceReferenceSetScriptable), true)]
+    [CustomEditor(typeof(ResourceReferenceSet), true)]
     public sealed class ResourceReferenceScriptableEditor : Editor
     {
         private SerializedProperty _data;
@@ -16,7 +16,6 @@ namespace ArdEditor.ResourceReference
         private HashSet<int> _duplicateCheck;
         private HashSet<int> _duplicatedHash;
         private GUIStyle _errorTextStyle;
-        private Rect _autocompleteRect;
 
         private void OnEnable()
         {
@@ -103,25 +102,6 @@ namespace ArdEditor.ResourceReference
                 EditorGUILayout.LabelField(errorLabel, errorBoxStyle);
             }
             _searchableList.DoLayoutList();
-
-            if (GUILayout.Button("Test Search"))
-            {
-                var list = new string[_data.arraySize];
-                for (var i = 0; i < list.Length; i++)
-                {
-                    list[i] = _data.GetArrayElementAtIndex(i).FindPropertyRelative(ResourceReferenceGenerator.KEY_FIELD).stringValue;
-                }
-
-                AutocompleteWindow.ShowBelow(_autocompleteRect, list, index =>
-                {
-                    Debug.Log($"Chosen reference: {list[index]}");
-                });
-            }
-
-            if (Event.current.type == EventType.Repaint)
-            {
-                _autocompleteRect = GUILayoutUtility.GetLastRect();
-            }
         }
     }
 }
