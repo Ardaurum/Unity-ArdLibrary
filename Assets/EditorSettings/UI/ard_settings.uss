@@ -1,0 +1,25 @@
+.title {
+    -unity-font-style: bold;
+    font-size: 16px;
+    color: rgba(210, 210, 210, 255);
+}
+
+.horizontal-layout {
+    flex-direction: row;
+    flex-basis: auto;
+    flex-shrink: 0;
+    flex-grow: 1;
+    height: 100%;
+}
+
+.spacer {
+    height: 12px;
+}
+
+.body {
+    margin-left: 9px;
+    margin-right: 8px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    color: rgba(210, 210, 210, 255);
+}

@@ -12,7 +12,7 @@ namespace ArdEditor.EditorTools
     {
         private static readonly Vector2 MinSize = new Vector2(300.0f, 200.0f);
         private static readonly Vector2 Size = new Vector2(320.0f, 300.0f);
-        private static readonly GUIContent SearchField = new GUIContent(EditorIconUtility.SearchIcon);
+        private static readonly GUIContent SearchField = new GUIContent(EditorIconProperties.SearchIcon);
         
         private Vector2 _scroll;
         private string _query;

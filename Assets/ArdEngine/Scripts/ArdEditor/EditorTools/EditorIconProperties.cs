@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ArdEditor.EditorTools
 {
-    public static class EditorIconUtility
+    public static class EditorIconProperties
     {
         public static readonly GUIContent InfoIcon = EditorGUIUtility.IconContent("console.infoicon");
         public static readonly GUIContent WarningIcon = EditorGUIUtility.IconContent("console.warnicon");

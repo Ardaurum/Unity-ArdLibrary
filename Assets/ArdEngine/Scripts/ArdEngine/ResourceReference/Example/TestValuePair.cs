@@ -1,17 +1,17 @@
 //========================================================
 // NO TOUCHING! This file was generated.
 // Any changes in this code will be removed when auto-generation runs.
-// Generation date: 05/04/2021 21:04:27
+// Generation date: 13/04/2021 22:21:43
 //========================================================
 
-using UnityEngine;
-using System.Collections.Generic;
+using System;
 
 namespace ArdEngine.ResourceReference.Example
 {
-	public sealed class TestResourceValueSet : ResourceReferenceSet
+	[Serializable]
+	public struct TestValuePair
 	{
-		[SerializeField] private TestResourceValuePair[] _data;
-		public IReadOnlyList<TestResourceValuePair> Data => _data;
+		public string Key;
+		public TestValue Value;
 	}
 }

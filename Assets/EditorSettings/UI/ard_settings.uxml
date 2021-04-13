@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="ard_settings.uss" />
+    <ui:VisualElement name="body" class="body">
+        <ui:Label text="Ard Engine" display-tooltip-when-elided="true" name="title" class="title" />
+        <ui:VisualElement name="spacer" class="spacer" />
+        <ui:ScrollView>
+            <ui:VisualElement name="content">
+                <ui:TextField picking-mode="Ignore" label="Data Path" value="Assets/Game/Data/Raw" text="Assets/Game/Data/Raw" focusable="false" name="data-path" readonly="true" view-data-key="stringValue" style="width: auto; align-items: center;">
+                    <ui:Button text="Browse" display-tooltip-when-elided="true" name="data-path-browse" />
+                </ui:TextField>
+            </ui:VisualElement>
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

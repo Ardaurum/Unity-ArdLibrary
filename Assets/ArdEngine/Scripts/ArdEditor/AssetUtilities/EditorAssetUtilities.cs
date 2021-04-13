@@ -1,13 +1,22 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace ArdEditor.AssetUtilities
 {
     public static class EditorAssetUtilities
     {
+        public static string ConvertToRelativeProjectPath(this string path)
+        {
+            Assert.IsTrue(path.StartsWith(Application.dataPath));
+            return Path.Combine(EditorConstants.ASSET_PATH + path.Substring(Application.dataPath.Length));
+        }
+        
         public static void CreateAssetAtSelection<T>(T asset, string name, bool overwrite = true, bool focus = false)
             where T : Object
         {
@@ -36,6 +45,7 @@ namespace ArdEditor.AssetUtilities
             string name = Path.GetFileName(fullPath);
 
             Assert.That(string.IsNullOrEmpty(path) == false, "Path can't be missing directory or filename");
+            EnsurePathExists(path);
 
             name = string.IsNullOrEmpty(name) ? typeof(T).ToString() : name;
             string finalPath = Path.Combine(path, name);
@@ -110,15 +120,21 @@ namespace ArdEditor.AssetUtilities
         public static IReadOnlyList<T> FindAssetsOfType<T>()
             where T : Object
         {
-            string[] paths = AssetDatabase.FindAssets($"t:{typeof(T).Name}");
-            var assets = new List<T>(paths.Length);
+            IReadOnlyList<Object> assets = FindAssetsOfType(typeof(T));
+            return assets.Cast<T>().ToList();
+        }
+
+        public static IReadOnlyList<Object> FindAssetsOfType(Type type)
+        {
+            string[] paths = AssetDatabase.FindAssets($"t:{type.Name}");
+            var assets = new List<Object>(paths.Length);
             for (var i = 0; i < paths.Length; i++)
             {
                 string assetPath = AssetDatabase.GUIDToAssetPath(paths[i]);
-                var asset = AssetDatabase.LoadAssetAtPath<T>(assetPath);
+                Object asset = AssetDatabase.LoadAssetAtPath(assetPath, type);
                 if (asset == null)
                 {
-                    Debug.LogError($"Found asset of type {typeof(T)} at {assetPath}, but it returned null!");
+                    Debug.LogError($"Found asset of type {type} at {assetPath}, but it returned null!");
                     continue;
                 }
 

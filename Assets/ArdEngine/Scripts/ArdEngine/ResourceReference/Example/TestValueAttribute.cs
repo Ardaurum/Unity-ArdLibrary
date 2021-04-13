@@ -1,17 +1,15 @@
 //========================================================
 // NO TOUCHING! This file was generated.
 // Any changes in this code will be removed when auto-generation runs.
-// Generation date: 05/04/2021 21:04:27
+// Generation date: 13/04/2021 22:21:45
 //========================================================
 
 using System;
 
 namespace ArdEngine.ResourceReference.Example
 {
-	[Serializable]
-	public struct TestResourceValuePair
+	public sealed class TestValueAttribute : ResourceReferenceAttribute
 	{
-		public string Key;
-		public TestResourceValue Value;
+		public override Type DataType => typeof(TestValueSet);
 	}
 }

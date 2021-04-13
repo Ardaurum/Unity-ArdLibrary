@@ -15,20 +15,12 @@ namespace ArdEditor.ResourceReference
         private SearchableListUI _searchableList;
         private HashSet<int> _duplicateCheck;
         private HashSet<int> _duplicatedHash;
-        private GUIStyle _errorTextStyle;
 
         private void OnEnable()
         {
             _data = serializedObject.FindProperty("_data");
             _duplicateCheck = new HashSet<int>();
             _duplicatedHash = new HashSet<int>();
-            _errorTextStyle = new GUIStyle(EditorStyles.textField)
-            {
-                normal = {textColor = Color.red}, 
-                active = {textColor = Color.red},
-                focused = {textColor = Color.red},
-                hover = {textColor = Color.red}
-            };
 
             _searchableList = new SearchableListUI(
                 new ReorderableList(serializedObject, _data, true, false, true, true)
@@ -40,13 +32,19 @@ namespace ArdEditor.ResourceReference
                         SerializedProperty value = element.FindPropertyRelative(ResourceReferenceGenerator.VALUE_FIELD);
 
                         Rect pos = rect;
-                        pos.x += 8.0f;
-                        pos.width -= 8.0f;
+                        pos.x += 14.0f;
+                        pos.width -= 14.0f;
                         pos.height = EditorGUIUtility.singleLineHeight;
                         GUIStyle textStyle = EditorStyles.textField;
                         if (_duplicatedHash.Contains(key.stringValue.GetStableHash()))
                         {
-                            textStyle = _errorTextStyle;
+                            textStyle = new GUIStyle(EditorStyles.textField)
+                            {
+                                normal = {textColor = Color.red},
+                                active = {textColor = Color.red},
+                                focused = {textColor = Color.red},
+                                hover = {textColor = Color.red}
+                            };
                         }
                         key.stringValue = EditorGUI.DelayedTextField(pos, key.stringValue, textStyle);
                         pos.height = rect.height - pos.height;
@@ -94,7 +92,7 @@ namespace ArdEditor.ResourceReference
 
             if (_duplicatedHash.Count > 0)
             {
-                var errorLabel = new GUIContent(EditorIconUtility.ErrorIcon)
+                var errorLabel = new GUIContent(EditorIconProperties.ErrorIcon)
                 {
                     text = "List contains duplicate hashes. Please remove or rename <color=red>red</color> entries."
                 };

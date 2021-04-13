@@ -74,7 +74,7 @@ namespace ArdEditor.ResourceReference
 
         private static void GenerateResourceReferenceRepository(CodeBuilder codeGen, Type resourceValue, string resourcePath)
         {
-            //TODO: Add ReplaceData() method
+            //TODO: Add ReplaceData() method for data overrides
             //TODO: Add Observable data <- should be controlled from config, so field shouldn't be observable...
             //More like the object that takes data should have a binding which would kick in and update data if needed.
             

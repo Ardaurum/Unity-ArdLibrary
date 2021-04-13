@@ -49,6 +49,11 @@ namespace ArdEditor.DataEditor
         public void OnBeforeSerialize() { }
         public void OnAfterDeserialize()
         {
+            if (_window == null)
+            {
+                return;
+            }
+            
             _drawMethod = GetDrawMethodDelegate(_window);
         }
         
@@ -56,6 +61,7 @@ namespace ArdEditor.DataEditor
         {
             MethodInfo drawMethodInfo = window.GetType().GetMethod(DRAW_METHOD_NAME, 
                 BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
+                
             if (drawMethodInfo == null)
             {
                 throw new MissingMethodException(window.GetType().Name, DRAW_METHOD_NAME);

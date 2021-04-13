@@ -3,7 +3,7 @@
 namespace ArdEngine.ResourceReference.Example
 {
     [Serializable]
-    public struct TestResourceValue : IResourceValue
+    public struct TestValue : IResourceValue
     {
         public int Value;
     }
