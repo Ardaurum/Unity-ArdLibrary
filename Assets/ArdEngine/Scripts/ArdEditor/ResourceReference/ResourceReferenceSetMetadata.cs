@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using ArdEditor.AssetUtilities;
 using ArdEngine.ResourceReference;
 using UnityEditor;
@@ -7,6 +6,7 @@ using Object = UnityEngine.Object;
 
 namespace ArdEditor.ResourceReference
 {
+    //TODO: Use this in ResourceReferenceEditorWindow
     public readonly struct ResourceReferenceSetMetadata
     {
         public readonly string Name;
@@ -17,8 +17,8 @@ namespace ArdEditor.ResourceReference
             string name = setType.Name;
             name = name.Remove(name.Length - 3, 3);
             Name = ObjectNames.NicifyVariableName(name);
-            IReadOnlyList<Object> sets = EditorAssetUtilities.FindAssetsOfType(setType);
-            if (sets.Count > 0)
+            Object[] sets = EditorAssetUtilities.FindAssetsOfType(setType);
+            if (sets.Length > 0)
             {
                 Set = (ResourceReferenceSet) sets[0];
             }

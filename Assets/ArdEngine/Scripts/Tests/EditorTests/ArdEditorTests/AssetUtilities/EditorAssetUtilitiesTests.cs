@@ -118,8 +118,8 @@ namespace EditorTests.ArdEditorTests.AssetUtilities
         public void FindAssetsOfType_AssetOfTypeExists_ReturnsIt()
         {
             CreateTestAsset("Test", 1, false);
-            var testScriptables = EditorAssetUtilities.FindAssetsOfType<TestScriptable>();
-            Assert.GreaterOrEqual(1, testScriptables.Count);
+            TestScriptable[] testScriptables = EditorAssetUtilities.FindAssetsOfType<TestScriptable>();
+            Assert.GreaterOrEqual(1, testScriptables.Length);
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -117,16 +116,26 @@ namespace ArdEditor.AssetUtilities
             return string.Empty;
         }
 
-        public static IReadOnlyList<T> FindAssetsOfType<T>()
+        public static T[] FindAssetsOfType<T>()
             where T : Object
         {
-            IReadOnlyList<Object> assets = FindAssetsOfType(typeof(T));
-            return assets.Cast<T>().ToList();
+            return (T[]) FindAssetsOfType(typeof(T));
         }
 
-        public static IReadOnlyList<Object> FindAssetsOfType(Type type)
+        public static Object[] FindAssetsOfType(Type type)
         {
-            string[] paths = AssetDatabase.FindAssets($"t:{type.Name}");
+            return FindAssetsOfTypeWithFilter(type);
+        }
+
+        public static T[] FindAssetsOfTypeWithFilter<T>(string filter = "")
+            where T: Object
+        {
+            return (T[]) FindAssetsOfTypeWithFilter(typeof(T), filter);
+        }
+
+        public static Object[] FindAssetsOfTypeWithFilter(Type type, string filter = "")
+        {
+            string[] paths = AssetDatabase.FindAssets(filter + $" t:{type.Name}");
             var assets = new List<Object>(paths.Length);
             for (var i = 0; i < paths.Length; i++)
             {
@@ -141,7 +150,24 @@ namespace ArdEditor.AssetUtilities
                 assets.Add(asset);
             }
 
-            return assets;
+            return assets.ToArray();
+        }
+        
+        public static string GetSingletonAssetGuidOfTypeByName<T>(string assetName)
+            where T : Object
+        {
+            string[] assets = AssetDatabase.FindAssets(assetName + $" t:{typeof(T).Name}");
+            if (assets == null || assets.Length == 0)
+            {
+                Debug.LogError($"Couldn't find asset {assetName} of type {typeof(T)}");
+                return string.Empty;
+            }
+            
+            if (assets.Length > 1)
+            {
+                Debug.LogWarning($"There are more than 1 asset with name {assetName} with type {typeof(T)}!");
+            }
+            return assets[0];
         }
     }
 }

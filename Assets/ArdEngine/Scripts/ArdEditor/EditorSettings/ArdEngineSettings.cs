@@ -9,7 +9,7 @@ namespace ArdEditor.EditorSettings
 {
     public sealed class ArdEngineSettings : ScriptableObject
     {
-        private const string SETTINGS_PATH = EDITOR_SETTINGS_PATH + "ArdEngineSettings.asset";
+        private const string SETTINGS_PATH = EDITOR_ASSETS_PATH + "ArdEngineSettings.asset";
 
         [SerializeField] private string _dataPath;
         public string DataPath => _dataPath;

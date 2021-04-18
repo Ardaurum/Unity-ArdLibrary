@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ArdEngine.DataTools;
+using ArdEngine.MathTools;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
@@ -13,12 +14,14 @@ namespace ArdEditor.EditorTools
         private static readonly Vector2 MinSize = new Vector2(300.0f, 200.0f);
         private static readonly Vector2 Size = new Vector2(320.0f, 300.0f);
         private static readonly GUIContent SearchField = new GUIContent(EditorIconProperties.SearchIcon);
-        
+
         private Vector2 _scroll;
         private string _query;
         private IReadOnlyList<string> _options;
         private List<int> _filteredOptions;
         private Action<int> _callback;
+        private int _selectedOption;
+        private GUIStyle _selectedStyle;
 
         [PublicAPI]
         public static void Show(Vector2 position, IReadOnlyList<string> options, Action<int> callback)
@@ -49,6 +52,7 @@ namespace ArdEditor.EditorTools
             _options = options;
             _filteredOptions = new List<int>();
             _callback = callback;
+            _selectedStyle = new GUIStyle(EditorStyles.miniButtonMid) { normal = { textColor = Color.cyan } };
             FilterOptions();
         }
 
@@ -60,29 +64,56 @@ namespace ArdEditor.EditorTools
         private void OnGUI()
         {
             EditorGUI.BeginChangeCheck();
+            GUI.SetNextControlName("Query");
             _query = EditorGUILayout.TextField(_query, EditorStyles.toolbarSearchField);
+            GUI.FocusControl("Query");
             if (EditorGUI.EndChangeCheck())
             {
+                _selectedOption = 0;
                 FilterOptions();
             }
+
             _scroll = EditorGUILayout.BeginScrollView(_scroll);
             for (var i = 0; i < _filteredOptions.Count; i++)
             {
-                if (GUILayout.Button(_options[_filteredOptions[i]]))
+                bool selected = _selectedOption == i;
+                if (GUILayout.Button((selected ? ">> " : string.Empty) + _options[_filteredOptions[i]],
+                    selected ? _selectedStyle : EditorStyles.miniButtonMid))
                 {
-                    _callback.Invoke(_filteredOptions[i]);   
+                    _callback.Invoke(_filteredOptions[i]);
+                    Close();
                 }
             }
+
             GUI.EndScrollView();
-            
-            //TODO: HANDLE KEYBOARD INPUT
-            /*
+
             Event currentEvent = Event.current;
-			if (currentEvent.type == EventType.KeyUp)
-			{
-				HandleButtons(currentEvent);
-			}
-             */
+            if (currentEvent.type == EventType.KeyUp)
+            {
+                HandleButtons(currentEvent);
+            }
+        }
+
+        private void HandleButtons(Event currentEvent)
+        {
+            switch (currentEvent.keyCode)
+            {
+                case KeyCode.Return:
+                    _callback.Invoke(_filteredOptions[_selectedOption]);
+                    Close();
+                    break;
+                case KeyCode.Escape:
+                    Close();
+                    break;
+                case KeyCode.UpArrow:
+                    _selectedOption = (_selectedOption - 1).Mod(_filteredOptions.Count);
+                    Repaint();
+                    break;
+                case KeyCode.DownArrow:
+                    _selectedOption = (_selectedOption + 1).Mod(_filteredOptions.Count);
+                    Repaint();
+                    break;
+            }
         }
 
         //TODO: Move to a static utility method
