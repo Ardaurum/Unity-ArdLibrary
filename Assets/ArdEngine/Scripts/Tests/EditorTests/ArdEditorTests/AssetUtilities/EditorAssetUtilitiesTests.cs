@@ -1,9 +1,11 @@
 ﻿using System.IO;
+using System.Text.RegularExpressions;
 using ArdEditor.AssetUtilities;
 using EditorTests.TestUtilities;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.TestTools;
 
 namespace EditorTests.ArdEditorTests.AssetUtilities
 {
@@ -120,6 +122,30 @@ namespace EditorTests.ArdEditorTests.AssetUtilities
             CreateTestAsset("Test", 1, false);
             TestScriptable[] testScriptables = EditorAssetUtilities.FindAssetsOfType<TestScriptable>();
             Assert.GreaterOrEqual(1, testScriptables.Length);
+        }
+
+        [TestCase("Relative/Path/To")]
+        [TestCase("")]
+        [TestCase("RRRRR/")]
+        public void ConvertToRelativeProjectPath_ForStringInAssets_ConvertsToRelativePath(string path)
+        {
+            Assert.AreEqual(Path.Combine(EditorConstants.ASSET_PATH, path), 
+                Path.Combine(Application.dataPath, path).ConvertToRelativeProjectPath());
+        }
+
+        [Test]
+        public void GetSingletonAssetGuidOfTypeByName_ForExistingAsset_ReturnsGUID()
+        {
+            CreateTestAsset("Test", 1, false);
+            string testGuid = AssetDatabase.AssetPathToGUID(GetTestAssetPath("Test"));
+            Assert.AreEqual(testGuid, EditorAssetUtilities.GetSingletonAssetGuidOfTypeByName<TestScriptable>("Test"));
+        }
+
+        [Test]
+        public void GetSingletonAssetGuidOfTypeByName_ForNonExistingAsset_ReturnsEmptyString()
+        {
+            LogAssert.Expect(LogType.Error, new Regex(".*", RegexOptions.Singleline));
+            Assert.AreEqual(string.Empty, EditorAssetUtilities.GetSingletonAssetGuidOfTypeByName<TestScriptable>("Test.asset"));
         }
     }
 }

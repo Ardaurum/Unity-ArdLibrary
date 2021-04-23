@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -12,8 +13,8 @@ namespace ArdEditor.AssetUtilities
     {
         public static string ConvertToRelativeProjectPath(this string path)
         {
-            Assert.IsTrue(path.StartsWith(Application.dataPath));
-            return Path.Combine(EditorConstants.ASSET_PATH + path.Substring(Application.dataPath.Length));
+            path = path.Substring(Application.dataPath.Length).TrimStart('\\', '/');
+            return Path.Combine(EditorConstants.ASSET_PATH, path);
         }
         
         public static void CreateAssetAtSelection<T>(T asset, string name, bool overwrite = true, bool focus = false)
@@ -119,7 +120,7 @@ namespace ArdEditor.AssetUtilities
         public static T[] FindAssetsOfType<T>()
             where T : Object
         {
-            return (T[]) FindAssetsOfType(typeof(T));
+            return FindAssetsOfType(typeof(T)).Cast<T>().ToArray();
         }
 
         public static Object[] FindAssetsOfType(Type type)
@@ -130,7 +131,7 @@ namespace ArdEditor.AssetUtilities
         public static T[] FindAssetsOfTypeWithFilter<T>(string filter = "")
             where T: Object
         {
-            return (T[]) FindAssetsOfTypeWithFilter(typeof(T), filter);
+            return FindAssetsOfTypeWithFilter(typeof(T), filter).Cast<T>().ToArray();
         }
 
         public static Object[] FindAssetsOfTypeWithFilter(Type type, string filter = "")
