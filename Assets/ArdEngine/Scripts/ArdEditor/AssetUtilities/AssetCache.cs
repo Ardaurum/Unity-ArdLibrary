@@ -10,7 +10,7 @@ namespace ArdEditor.AssetUtilities
     public sealed class AssetCache : ScriptableObject, ISerializationCallbackReceiver
     {
         private const string CACHE_PATH = EDITOR_ASSETS_PATH + "AssetCache.asset";
-        [SerializeField] private List<CacheEntry> _serializedEntries;
+        [SerializeField] private CacheEntry[] _serializedEntries;
         private Dictionary<string, string> _cache;
 
         public static T GetSingletonAssetWithName<T>(string assetName)
@@ -49,18 +49,19 @@ namespace ArdEditor.AssetUtilities
             {
                 return;
             }
-            
-            _serializedEntries.Clear();
+
+            var index = 0;
+            _serializedEntries = new CacheEntry[_cache.Count];
             foreach (KeyValuePair<string, string> keyValuePair in _cache)
             {
-                _serializedEntries.Add(new CacheEntry(keyValuePair.Key, keyValuePair.Value));
+                _serializedEntries[index++] = new CacheEntry(keyValuePair.Key, keyValuePair.Value);
             }
         }
 
         public void OnAfterDeserialize()
         {
-            _cache = new Dictionary<string, string>(_serializedEntries.Count);
-            for (var i = 0; i < _serializedEntries.Count; i++)
+            _cache = new Dictionary<string, string>(_serializedEntries.Length);
+            for (var i = 0; i < _serializedEntries.Length; i++)
             {
                 CacheEntry entry = _serializedEntries[i];
                 _cache.Add(entry.Name, entry.Guid);

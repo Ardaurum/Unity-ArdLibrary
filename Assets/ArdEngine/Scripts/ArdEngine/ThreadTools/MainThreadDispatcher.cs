@@ -1,33 +1,15 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Threading;
-using UnityEngine;
-using Object = UnityEngine.Object;
+using UnityEngine.Assertions;
 
 namespace ArdEngine.ThreadTools
 {
-    #if UNITY_EDITOR
-    [UnityEditor.InitializeOnLoad]
-    #endif
     public sealed class MainThreadDispatcher
     {
         private static readonly int MainThreadId = Thread.CurrentThread.ManagedThreadId;
-        private static MainThreadDispatcher _instance;
+        public static readonly MainThreadDispatcher Instance = new MainThreadDispatcher();
 
-        #if UNITY_EDITOR
-        static MainThreadDispatcher()
-        {
-            Initialize();
-            UnityEditor.EditorApplication.playModeStateChanged += _ => Initialize();
-        }
-        #endif
-
-        [RuntimeInitializeOnLoadMethod]
-        private static void Initialize()
-        {
-            _instance = new MainThreadDispatcher();
-        }
-            
         public static void QueueTask(Action task)
         {
             if (MainThreadId == Thread.CurrentThread.ManagedThreadId)
@@ -36,7 +18,7 @@ namespace ArdEngine.ThreadTools
             }
             else
             {
-                _instance._taskQueue.Enqueue(task);
+                Instance._taskQueue.Enqueue(task);
             }
         }
 
@@ -45,34 +27,14 @@ namespace ArdEngine.ThreadTools
         private MainThreadDispatcher()
         {
             _taskQueue = new ConcurrentQueue<Action>();
-            
-            #if UNITY_EDITOR
-            if (Application.isPlaying == false)
-            {
-                UnityEditor.EditorApplication.update += Update;
-                return;
-            }
-            #endif
-            var updateProvider = new GameObject("ArdEngine: MainThreadDispatcher");
-            updateProvider.AddComponent<RuntimeUpdateProvider>().MainThreadDispatcher = this;
-            Object.DontDestroyOnLoad(updateProvider);
         }
 
-        private void Update()
+        public void Update()
         {
+            Assert.IsTrue(Thread.CurrentThread.ManagedThreadId == MainThreadId);
             while (_taskQueue.TryDequeue(out Action task))
             {
                 task();
-            }
-        }
-
-        private sealed class RuntimeUpdateProvider : MonoBehaviour
-        {
-            public MainThreadDispatcher MainThreadDispatcher;
-
-            private void Update()
-            {
-                MainThreadDispatcher.Update();
             }
         }
     }

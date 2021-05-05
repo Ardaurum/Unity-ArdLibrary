@@ -1,0 +1,9 @@
+test: "testValue"
+testList:
+- testItem1: "testItem1Value"
+- testItem2: "testItem2Value"
+testObject:
+  field1: "someother"
+  speed: 23523.4
+  strength: 1264
+...

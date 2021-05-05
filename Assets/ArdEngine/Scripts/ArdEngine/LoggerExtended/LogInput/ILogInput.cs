@@ -4,6 +4,6 @@ namespace ArdEngine.LoggerExtended.LogInput
 {
     public interface ILogInput
     {
-        IObservable<LogQueueEntry> LogStream { get; }
+        event Action<LogQueueEntry> LogEmitted;
     }
 }
