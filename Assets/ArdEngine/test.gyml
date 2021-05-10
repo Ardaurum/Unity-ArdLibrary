@@ -1,1 +1,7 @@
-simple: "simpleValue"
+CS_SCHEMA_FILE: GymlTestSchema
+---
+testBool: false
+testInt: 98
+testString: Hello
+testFloat: 35.2999992
+testRange: 0.759000003

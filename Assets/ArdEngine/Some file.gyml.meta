@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e4f56cabeb99c6e4bba1093284ea016c
+guid: aaa0355a6114b7e489772e9f1ac9892b
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -8,4 +8,4 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: a09770bfef594f88898ff2b98a10da73, type: 3}
-  _gymlAsset: {fileID: 8137916828452243870, guid: e4f56cabeb99c6e4bba1093284ea016c, type: 3}
+  GymlAsset: {instanceID: 0}

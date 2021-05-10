@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ArdEngine.DataTools;
 using ArdEngine.GameDataTools;
 using JetBrains.Annotations;
 using UnityEditor;
@@ -7,16 +8,16 @@ using UnityEditor.Experimental;
 
 namespace ArdEditor.AssetUtilities
 {
-    public sealed partial class GameYamlFileCache
+    public sealed partial class GymlFileCache
     {
         [UsedImplicitly]
-        private sealed class GameYamlAssetMonitor : AssetsModifiedProcessor
+        private sealed class GymlAssetMonitor : AssetsModifiedProcessor
         {
             protected override void OnAssetsModified(string[] changedAssets, string[] addedAssets, string[] deletedAssets,
                 AssetMoveInfo[] movedAssets)
             {
                 var isDirty = false;
-                GameYamlFileCache cache = GetOrCreateCache();
+                GymlFileCache cache = GetOrCreateCache();
                 CacheEntry[] entries = cache._entries ?? new CacheEntry[0];
                 string[] assetsToUpdate = FindAssetsToUpdate(addedAssets);
                 
@@ -53,7 +54,7 @@ namespace ArdEditor.AssetUtilities
                 {
                     for (var j = 0; j < entries.Length; j++)
                     {
-                        if (entries[j].Path == movedAssets[i].sourceAssetPath)
+                        if (entries[j].Path.PathEquals(movedAssets[i].sourceAssetPath))
                         {
                             entries[j].Path = movedAssets[i].destinationAssetPath;
                             isDirty = true;

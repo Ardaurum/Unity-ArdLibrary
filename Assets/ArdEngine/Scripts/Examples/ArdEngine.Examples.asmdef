@@ -1,0 +1,16 @@
+{
+    "name": "ArdEngine.Examples",
+    "rootNamespace": "",
+    "references": [
+        "GUID:aba50ad0a62b8fe40aa3878a6af34793"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

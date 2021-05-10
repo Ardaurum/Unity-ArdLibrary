@@ -1,4 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.IO;
+using System.Runtime.CompilerServices;
 using System.Text;
 using ArdEngine.HashTools;
 
@@ -23,6 +25,11 @@ namespace ArdEngine.DataTools
         public static bool FuzzyContains(this string text, string query)
         {
             return text.GetSubstringDamerauLevenshteinDistance(query) < SIMILARITY_SCORE;
+        }
+
+        public static bool PathEquals(this string pathA, string pathB)
+        {
+            return Path.GetFullPath(pathA).Equals(Path.GetFullPath(pathB), StringComparison.InvariantCulture);
         }
     }
 }

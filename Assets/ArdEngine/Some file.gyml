@@ -1,9 +1,17 @@
-test: "testValue"
+test2: "testValue"
 testList:
-- testItem1: "testItem1Value"
-- testItem2: "testItem2Value"
+- testItem1: &itemAlias "testItem1Value"
+- testItem2: "testItem1Value"
+- testItem3: *itemAlias
+- item4
+- nestedList:
+  - nestedItem1
+  - nestedItem2: &1257138532 "nestedValue"
 testObject:
   field1: "someother"
+  nested:
+    nestedValue: "fsasdofj"
+    nested2: "hey"
   speed: 23523.4
   strength: 1264
 ...

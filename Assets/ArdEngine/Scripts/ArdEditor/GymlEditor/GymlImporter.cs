@@ -3,7 +3,7 @@ using ArdEditor.EditorTools;
 using UnityEditor.AssetImporters;
 using UnityEngine;
 
-namespace ArdEditor.GameYamlDataEditor
+namespace ArdEditor.GymlEditor
 {
     [ScriptedImporter(1, "gyml")]
     public class GymlImporter : ScriptedImporter
